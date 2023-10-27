@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crud/controll/controller.dart';
 
 import 'package:flutter/material.dart';
@@ -57,6 +58,70 @@ class _HomePageState extends State<HomePage> {
                       border: OutlineInputBorder(), hintText: "Search news..."),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(right: 120, bottom: 10),
+                child: Container(
+                  width: 200,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade400,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: const Center(
+                    child: Text(
+                      "Top trending News",
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+              CarouselSlider(
+                  items: List.generate(
+                      10,
+
+                      // ignore: sized_box_for_whitespace
+                      (index) => Container(
+                            height: 100,
+                            child: Stack(children: [
+                              Image.network(
+                                homeprovider.responsedata?.articles?[index]
+                                        .urlToImage
+                                        .toString() ??
+                                    "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
+                                fit: BoxFit.fill,
+                              ),
+                              Positioned(
+                                bottom: 25,
+                                child: Text(
+                                  homeprovider
+                                          .responsedata?.articles?[index].title
+                                          .toString() ??
+                                      "",
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              )
+                            ]),
+                          )),
+                  options: CarouselOptions(
+                    height: 250,
+                    aspectRatio: 16 / 9,
+                    viewportFraction: 0.8,
+                    initialPage: 0,
+                    enableInfiniteScroll: true,
+                    reverse: false,
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 3),
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enlargeCenterPage: true,
+                    enlargeFactor: 0.3,
+                    scrollDirection: Axis.horizontal,
+                  )),
               homeprovider.isloading
                   ? const Center(child: CircularProgressIndicator())
                   : ListView.builder(
