@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:crud/model/useremodels.dart';
-import 'package:http/http.dart' as http;
+import 'package:crud/controll/controller.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,36 +13,25 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    fetchdata();
-    setState(() {});
+    Provider.of<Screencontroller>(context, listen: false).fetchdata();
+
     super.initState();
-  }
-
-  Publicapiresponse? responsedata;
-  bool isloading = false;
-  fetchdata({String? searchquery = "trending"}) async {
-    final url = Uri.parse(
-        "https://newsapi.org/v2/everything?q=$searchquery&apiKey=2669d1f8cd1c4eb8b75812820b7c120e");
-    var response = await http.get(url);
-
-    print(response.statusCode);
-
-    responsedata = Publicapiresponse.fromJson(jsonDecode(response.body));
   }
 
   TextEditingController searchcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final homeprovider = Provider.of<Screencontroller>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          isloading = true;
-          setState(() {});
-          fetchdata();
+          homeprovider.isloading = true;
+
+          homeprovider.fetchdata();
 
           await Future.delayed(const Duration(seconds: 2))
-              .then((value) => isloading = false);
+              .then((value) => homeprovider.isloading = false);
 
           setState(() {});
         },
@@ -53,7 +40,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(),
       body: RefreshIndicator(
         onRefresh: () async {
-          await fetchdata();
+          await homeprovider.fetchdata();
         },
         child: SafeArea(
           child: SingleChildScrollView(
@@ -63,19 +50,20 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
                   onChanged: (value) {
-                    fetchdata(searchquery: searchcontroller.text);
+                    homeprovider.fetchdata(searchquery: searchcontroller.text);
                   },
                   controller: searchcontroller,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), hintText: "Search news..."),
                 ),
               ),
-              isloading
+              homeprovider.isloading
                   ? const Center(child: CircularProgressIndicator())
                   : ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: responsedata?.articles?.length ?? 0,
+                      itemCount:
+                          homeprovider.responsedata?.articles?.length ?? 0,
                       itemBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Container(
@@ -93,7 +81,8 @@ class _HomePageState extends State<HomePage> {
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Text(
-                                  responsedata?.articles?[index].title
+                                  homeprovider
+                                          .responsedata?.articles?[index].title
                                           .toString() ??
                                       "",
                                   style: const TextStyle(
@@ -111,7 +100,8 @@ class _HomePageState extends State<HomePage> {
                                     height: 200,
                                     width: 150,
                                     child: Image.network(
-                                      responsedata?.articles?[index].urlToImage
+                                      homeprovider.responsedata
+                                              ?.articles?[index].urlToImage
                                               .toString() ??
                                           "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
                                       fit: BoxFit.fill,
@@ -123,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                                       width:
                                           MediaQuery.sizeOf(context).width * .4,
                                       child: Text(
-                                        responsedata
+                                        homeprovider.responsedata
                                                 ?.articles?[index].description
                                                 .toString() ??
                                             "",
