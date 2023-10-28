@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:crud/components/themedata.dart';
 import 'package:crud/controll/controller.dart';
 import 'package:crud/view/homescreen/details.dart';
 
@@ -25,20 +26,29 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final homeprovider = Provider.of<Screencontroller>(context);
+
+    // final themeproviderdata = Provider.of<Themeprovider>(context);
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () async {
-      //     homeprovider.isloading = true;
-
-      //     homeprovider.fetchdata();
-
-      //     await Future.delayed(const Duration(seconds: 2))
-      //         .then((value) => homeprovider.isloading = false);
-
-      //   },
-      //   child: const Icon(Icons.search),
-      // ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(),
+      drawer: Drawer(
+        child: ListView(children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(color: Colors.blue),
+            child: Text(
+              "Settings",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          ListTile(
+            title: const Text("Theme"),
+            trailing: const Icon(Icons.light_mode),
+            onTap: () {
+              Provider.of<Themeprovider>(context, listen: false).toggletheme();
+            },
+          ),
+        ]),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await homeprovider.fetchdata();

@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  custom_rich_text:
+    dependency: "direct main"
+    description:
+      name: custom_rich_text
+      sha256: "7814ef7170d2a93248448b01d94d8335b09c21a9d501889061e7860368a186f4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   fake_async:
     dependency: transitive
     description:
