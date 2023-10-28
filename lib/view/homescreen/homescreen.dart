@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crud/controll/controller.dart';
+import 'package:crud/view/homescreen/details.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,19 +26,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final homeprovider = Provider.of<Screencontroller>(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          homeprovider.isloading = true;
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     homeprovider.isloading = true;
 
-          homeprovider.fetchdata();
+      //     homeprovider.fetchdata();
 
-          await Future.delayed(const Duration(seconds: 2))
-              .then((value) => homeprovider.isloading = false);
+      //     await Future.delayed(const Duration(seconds: 2))
+      //         .then((value) => homeprovider.isloading = false);
 
-          setState(() {});
-        },
-        child: const Icon(Icons.search),
-      ),
+      //   },
+      //   child: const Icon(Icons.search),
+      // ),
       appBar: AppBar(),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
               ),
               CarouselSlider(
                   items: List.generate(
-                      10,
+                      homeprovider.responsedata?.articles?.length ?? 0,
 
                       // ignore: sized_box_for_whitespace
                       (index) => Container(
@@ -131,68 +131,83 @@ class _HomePageState extends State<HomePage> {
                           homeprovider.responsedata?.articles?.length ?? 0,
                       itemBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              border: Border.all(
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(20)),
-                          width: double.infinity,
-                          height: 350,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Text(
-                                  homeprovider
-                                          .responsedata?.articles?[index].title
-                                          .toString() ??
-                                      "",
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                  maxLines: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (homeprovider.responsedata?.articles?[index] !=
+                                null) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Screen2(
+                                        newarticle: homeprovider
+                                            .responsedata!.articles![index]),
+                                  ));
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                border: Border.all(
+                                  color: Colors.black,
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  SizedBox(
-                                    height: 200,
-                                    width: 150,
-                                    child: Image.network(
-                                      homeprovider.responsedata
-                                              ?.articles?[index].urlToImage
-                                              .toString() ??
-                                          "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
-                                      fit: BoxFit.fill,
-                                    ),
+                                borderRadius: BorderRadius.circular(20)),
+                            width: double.infinity,
+                            height: 350,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    homeprovider.responsedata?.articles?[index]
+                                            .title
+                                            .toString() ??
+                                        "",
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                    maxLines: 1,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: SizedBox(
-                                      width:
-                                          MediaQuery.sizeOf(context).width * .4,
-                                      child: Text(
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                      width: 150,
+                                      child: Image.network(
                                         homeprovider.responsedata
-                                                ?.articles?[index].description
+                                                ?.articles?[index].urlToImage
                                                 .toString() ??
-                                            "",
-                                        maxLines: 10,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
+                                            "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png",
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: SizedBox(
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                .4,
+                                        child: Text(
+                                          homeprovider.responsedata
+                                                  ?.articles?[index].description
+                                                  .toString() ??
+                                              "",
+                                          maxLines: 10,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
