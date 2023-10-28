@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:crud/components/theme.dart';
+import 'package:crud/components/themedata.dart';
 import 'package:crud/controll/controller.dart';
 import 'package:crud/view/homescreen/homescreen.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +25,17 @@ class _MyappState extends State<Myapp> {
       providers: [
         ChangeNotifierProvider(
           create: (context) => Screencontroller(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Themeprovider(),
         )
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomePage(),
+        home: const HomePage(),
+        theme: lightmode,
+        darkTheme: darkmode,
+        //theme: Provider.of<Themeprovider>(context).themedata,
       ),
     );
   }
