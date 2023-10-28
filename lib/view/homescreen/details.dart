@@ -1,5 +1,8 @@
 import 'package:crud/model/useremodels.dart';
+import 'package:custom_rich_text/custom_rich_text.dart';
+import 'package:custom_rich_text/models/read_more_less_model.dart';
 import 'package:flutter/material.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 class Screen2 extends StatefulWidget {
@@ -90,16 +93,19 @@ class _Screen2State extends State<Screen2> {
             ),
             Container(
               width: MediaQuery.sizeOf(context).width * 1,
-              height: 500,
+              height: 700,
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text.rich(TextSpan(children: [
-                  TextSpan(
-                      text: widget.newarticle.content.toString(),
-                      style: TextStyle(fontSize: 18))
-                ])),
-              ),
+                  padding: const EdgeInsets.all(10.0),
+                  child: CustomRichText(
+                    text: widget.newarticle.description.toString(),
+                    textStyle:
+                        const TextStyle(color: Colors.black, fontSize: 18),
+                    readMoreLessModel: ReadMoreLessModel(
+                        trimLines: 3,
+                        readLessText: 'read less',
+                        readMoreText: 'read more'),
+                  )),
             )
           ],
         ),
