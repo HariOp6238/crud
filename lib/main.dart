@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:crud/components/theme.dart';
 import 'package:crud/components/themedata.dart';
 import 'package:crud/controll/controller.dart';
 import 'package:crud/view/homescreen/homescreen.dart';
+import 'package:crud/view/splashscreen/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +31,7 @@ class _MyappState extends State<Myapp> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const HomePage(),
+        home: const Splash(),
         theme: lightmode,
         darkTheme: darkmode,
         //theme: Provider.of<Themeprovider>(context).themedata,
