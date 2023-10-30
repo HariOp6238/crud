@@ -122,7 +122,6 @@ class _HomePageState extends State<HomePage> {
                     viewportFraction: 0.8,
                     initialPage: 0,
                     enableInfiniteScroll: true,
-                    reverse: false,
                     autoPlay: true,
                     autoPlayInterval: const Duration(seconds: 3),
                     autoPlayAnimationDuration:

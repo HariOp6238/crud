@@ -1,7 +1,8 @@
 import 'package:crud/model/useremodels.dart';
-import 'package:custom_rich_text/custom_rich_text.dart';
-import 'package:custom_rich_text/models/read_more_less_model.dart';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:share/share.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,6 +19,11 @@ class _Screen2State extends State<Screen2> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       floatingActionButton: FloatingActionButton.extended(
           label: const Text("Read More"),
           onPressed: () {
@@ -36,77 +42,61 @@ class _Screen2State extends State<Screen2> {
                       image:
                           NetworkImage(widget.newarticle.urlToImage.toString()),
                       fit: BoxFit.fill)),
-              child: Column(
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                width: MediaQuery.sizeOf(context).width,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade700,
+                    borderRadius: BorderRadius.circular(15)),
+                child: Center(
+                    child: Text(
+                  widget.newarticle.title.toString(),
+                  maxLines: 1,
+                  style: const TextStyle(fontSize: 18),
+                )),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 290),
-                    child: Container(
-                      width: 350,
-                      height: 50,
-                      color: Colors.transparent,
-                      child: Center(
-                        child: Text(
-                          widget.newarticle.title.toString(),
-                          maxLines: 1,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
+                  Text(widget.newarticle.publishedAt.toString()
+                      // 'Published At:${ DateFormat('EEE MMM d, yyyy h:mm a').format(widget.newarticle.publishedAt?.toLocal(). )}'),
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        width: 190,
-                        height: 50,
-                        color: Colors.transparent,
-                        child: Center(
-                          child: Text(
-                            widget.newarticle.author.toString(),
-                            maxLines: 1,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 190,
-                        height: 50,
-                        color: Colors.transparent,
-                        child: Center(
-                            child: Text(
-                          widget.newarticle.publishedAt.toString(),
-                          style: const TextStyle(color: Colors.white),
-                        )),
-                      )
-                    ],
+                  IconButton(
+                    icon: const Icon(Icons.share),
+                    onPressed: () {
+                      Share.share(widget.newarticle.url.toString());
+                    },
                   )
                 ],
               ),
             ),
-            Container(
-              width: MediaQuery.sizeOf(context).width * 1,
-              height: 700,
-              color: Colors.white,
-              child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: CustomRichText(
-                    text: widget.newarticle.description.toString(),
-                    textStyle:
-                        const TextStyle(color: Colors.black, fontSize: 18),
-                    readMoreLessModel: ReadMoreLessModel(
-                        trimLines: 3,
-                        readLessText: 'read less',
-                        readMoreText: 'read more'),
-                  )),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(widget.newarticle.content.toString()),
             )
+
+            // Container(
+            //   width: MediaQuery.sizeOf(context).width * 1,
+            //   height: 700,
+            //   color: Colors.white,
+            //   child: Padding(
+            //       padding: const EdgeInsets.all(10.0),
+            //       child: CustomRichText(
+            //         text: widget.newarticle.content.toString(),
+            //         textStyle:
+            //             const TextStyle(color: Colors.black, fontSize: 18),
+            //         readMoreLessModel: ReadMoreLessModel(
+            //             trimLines: 3,
+            //             readLessText: 'read less',
+            //             readMoreText: 'read more'),
+            //       )),
+            // )
           ],
         ),
       ),
