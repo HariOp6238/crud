@@ -43,19 +43,19 @@ class _SplashState extends State<Splash> {
               children: [
                 const SizedBox(
                   width: 20,
-                  height: 100,
+                  height: 80,
                 ),
                 const Text(
                   "Be",
-                  style: TextStyle(fontSize: 40, color: Colors.black),
+                  style: TextStyle(fontSize: 30, color: Colors.black),
                 ),
                 const SizedBox(
                   width: 20,
-                  height: 100,
+                  height: 80,
                 ),
                 DefaultTextStyle(
                     style: GoogleFonts.audiowide(
-                      fontSize: 40,
+                      fontSize: 30,
                     ),
                     child: AnimatedTextKit(
                       repeatForever: true,
